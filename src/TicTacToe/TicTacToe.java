@@ -21,19 +21,29 @@ public class TicTacToe {
         while (true) {
             Scanner scan = new Scanner(System.in);
             System.out.println("Enter integer 1-9 :");
-            int position = scan.nextInt();
+            int playerPos = scan.nextInt();
+            while(playerPositions.contains(playerPos) || cpuPositions.contains(playerPos)){
+                System.out.println("position taken, play elsewhere");
+                playerPos = scan.nextInt();
+            }
+            System.out.println(playerPos);
 
-            System.out.println(position);
-
-            placingPiece(gameBoard, position, "player");
+            placingPiece(gameBoard, playerPos, "player");
 
             //Using Random class for generating pseudo random numbers
             Random random = new Random();
-            int cpuPosition = random.nextInt(9) + 1;
-            placingPiece(gameBoard, cpuPosition, "cpu");
+            int cpuPos = random.nextInt(9) + 1;
+            while(playerPositions.contains(cpuPos) || cpuPositions.contains(cpuPos)){
+                System.out.println("position taken, play elsewhere");
+                cpuPos = random.nextInt(9) +1;
+            }
+
+            placingPiece(gameBoard, cpuPos, "cpu");
 
             printGameBoard(gameBoard);
-            checkWinner();
+
+           String result = checkWinner();
+            System.out.println(result);
 
         }
     }
@@ -55,8 +65,10 @@ public class TicTacToe {
 
         if (user.equals("player")){
             symbol = 'x';
+            playerPositions.add(position);
         } else if (user.equals("cpu")){
             symbol = 'o';
+            cpuPositions.add(position);
         }
         // A switch case for the array positions(index)and placement of x
         switch (position) {
